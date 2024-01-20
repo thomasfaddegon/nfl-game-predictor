@@ -7,7 +7,7 @@ from utils import get_team_name
 from joblib import dump
 from feature_engineering import create_game_features
 
-def train_model(start_year, end_year, model_name, use_scaling=False, regularization=None, alpha=0.5, l1_ratio=0.5, remove_features=None):
+def train_model(start_year, end_year, model_name, use_scaling=False, regularization=None, alpha=0.5, l1_ratio=0.5, remove_features=False):
     # Load the scores data
     scores_df = pd.read_csv('data/scores.csv')
 
@@ -44,13 +44,34 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
 
         # Combine all the features for the season
         season_features = pd.concat(season_combined_features, ignore_index=True)
-        X = pd.concat([X, season_features])
+
 
     # Optional: Save the features to a file
     # X.to_csv('x.csv', index=False)
 
+    # Define the features to remove if remove_features is True
+    if remove_features:
+        features_to_remove = [
+            'Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G',
+            'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS',
+            'Defense_Rushing_TOTAL PTS'
+        ]
+
+        # features_to_remove = ['Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G', 'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS', 'Defense_Rushing_TOTAL PTS',
+        #                         'Defense_Passing_SACK YDS', 'Offense_Passing_SACKS',
+        #                         'Defense_Passing_TD', 'Defense_Rushing_TOP', 'Defense_Rushing_ATT',
+        #                         'Offense_Passing_INT', 'Offense_Rushing_ATT', 'Offense_Rushing_YDS/ATT',
+        #                         'Offense_Rushing_TOP', 'Offense_Rushing_YDS']
+        season_features = season_features.drop(columns=features_to_remove, errors='ignore')
+
+    # Create X
+    X = pd.concat([X, season_features])
+
     # Remove game_id column
     X = X.drop(['game_id'], axis=1)
+
+    print(X)
+
 
     # Create X and y
     y = X['team_score']

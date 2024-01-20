@@ -13,26 +13,47 @@ from joblib import dump
 from joblib import load
 import os
 
-def predict_game_score(away_team, home_team, model, season=2023, print_results=False, remove_features=False):
+def predict_game_score(away_team, home_team, models, season=2023, print_results=False, remove_features=False):
+    print('running prediction...')
     # Create game features
     home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
 
-    # Predict the score
-    home_score = model.predict(home_features)[0]
-    away_score = model.predict(away_features)[0]
+    # Predict the score for each model
+    home_scores = []
+    away_scores = []
+    home_wins = 0
+    away_wins = 0
+
+    for i, model in enumerate(models):
+        model_path = f"models/{model}.joblib"
+        model = load(model_path)
+        print(model_path, os.path.exists(model_path))
+
+        home_score = model.predict(home_features)[0]
+        away_score = model.predict(away_features)[0]
+        home_scores.append(home_score)
+        away_scores.append(away_score)
+
+        if home_score > away_score:
+            home_wins += 1
+        else:
+            away_wins += 1
 
     if print_results:
-        print(f'{away_team}: {away_score}')
-        print(f'{home_team}: {home_score}')
-        if home_score > away_score:
-            print(f'The {home_team} win {round(home_score)} to {round(away_score)}!')
-        else:
-            print(f'The {away_team} win {round(away_score)} to {round(home_score)}!')
-        print('')
+        print('Games Won:')
+        print(f'{home_team} {home_wins} - {away_team} {away_wins}')
 
-    winner = home_team if home_score > away_score else away_team
+        print('Avg Score:')
+        print(f'{home_team} {round(sum(home_scores) / len(models))} - {away_team} {round(sum(away_scores) / len(models))}')
 
-    return winner, away_score, home_score
+        print('Scores:')
+        for i, model_name in enumerate(models):
+            print(f'{model_name}: {home_team} {round(home_scores[i])}, {away_team} {round(away_scores[i])}')
+
+    # Determine the winner based on average scores
+    winner = home_team if round(sum(home_scores) / len(models)) > round(sum(away_scores) / len(models)) else away_team
+
+    return winner, home_scores, away_scores
 
 
 def predict_season_games(model, season=2023, remove_features=False):
@@ -67,11 +88,17 @@ def predict_season_games(model, season=2023, remove_features=False):
     return predict_percentage
 
 def predict_wild_card_round (models):
-    for model in models:
-        predict_game_score('Browns', 'Texans', model, print_results=True)
-        predict_game_score('Dolphins', 'Chiefs', model, print_results=True)
-        predict_game_score('Steelers', 'Bills', model, print_results=True)
-        predict_game_score('Packers', 'Cowboys',  model, print_results=True)
-        predict_game_score('Rams', 'Lions', model, print_results=True)
-        predict_game_score('Eagles', 'Buccaneers', model, print_results=True)
+    predict_game_score('Browns', 'Texans', models, print_results=True)
+    predict_game_score('Dolphins', 'Chiefs', models, print_results=True)
+    predict_game_score('Steelers', 'Bills', models, print_results=True)
+    predict_game_score('Packers', 'Cowboys',  models, print_results=True)
+    predict_game_score('Rams', 'Lions', models, print_results=True)
+    predict_game_score('Eagles', 'Buccaneers', models, print_results=True)
+
+def predict_divisional_round (models, remove_features=False):
+    predict_game_score('Texans', 'Ravens', models, print_results=True, remove_features=remove_features)
+    predict_game_score('Packers', '49ers', models, print_results=True, remove_features=remove_features)
+    predict_game_score('Buccaneers', 'Lions', models, print_results=True, remove_features=remove_features)
+    predict_game_score('Chiefs', 'Bills',  models, print_results=True, remove_features=remove_features)
+
 

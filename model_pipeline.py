@@ -10,7 +10,7 @@ def run_model_variations(testing_year=2023):
     scale_options = [False, True]
     regularization_types = [None, 'ridge', 'lasso', 'elasticnet']
     regularization_strengths = [0.2, 0.4, 0.6, 0.8, 1.0]
-    feature_removal_options = [False]
+    feature_removal_options = [True, False]
 
     results = []
 
@@ -29,7 +29,7 @@ def run_model_variations(testing_year=2023):
                         model = load(f'models/{model_name}.joblib')
 
                         # Load the trained model and predict season games
-                        accuracy = predict_season_games(model, testing_year)
+                        accuracy = predict_season_games(model, testing_year, remove_features=remove_features)
 
                         # Store results
                         results.append({
