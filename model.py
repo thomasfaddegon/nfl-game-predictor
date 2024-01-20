@@ -13,7 +13,6 @@ from joblib import load
 import os
 
 
-
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.expand_frame_repr', False)  # Prevent wrapping to next line
 
@@ -165,7 +164,6 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
     return mse
 
 def predict_game_score(away_team, home_team, model, season=2023, print_results=False, remove_features=False):
-
 
     # Load the offense and defense data for all teams
     offense_combined_df, defense_combined_df = load_and_clean_offense_defense_data(season)
@@ -338,8 +336,8 @@ def run_model_variations(testing_year=2023):
 
 
 
-run_model_variations(2023)
-# run_model_variations(2022)
+# run_model_variations(2023)
+run_model_variations(2022)
 # run_model_variations(2021)
 
 
