@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 from sklearn.metrics import mean_squared_error
@@ -95,9 +96,13 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
     # Predict and evaluate
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
+
+    r_squared = r2_score(y_test, y_pred)
+
     print(f"Mean Squared Error: {mse}")
+    print(f"R^2: {r_squared}")
 
     # Save the model
     dump(model, f'models/{model_name}.joblib')
 
-    return mse
+    return mse, r_squared

@@ -55,7 +55,7 @@ def predict_game_score(away_team, home_team, model_names, season=2023, print_res
     return winner, avg_home_score, avg_away_score
 
 
-def predict_season_games(model_names, season=2023, remove_features=False):
+def predict_season_games(model_names, season=2023, remove_features=False, print_results=False):
     print('predicting games...')
 
     # Load the scores data and filter by season
@@ -81,9 +81,10 @@ def predict_season_games(model_names, season=2023, remove_features=False):
         else:
             pick_record[1] += 1
 
-    print(f'Picks: {pick_record[0]} - {pick_record[1]}')
-    predict_percentage = round(pick_record[0] / (pick_record[0] + pick_record[1]) * 100, 2)
-    print(f'Predicted {predict_percentage}% of games correctly!')
+    if print_results:
+        print(f'Picks: {pick_record[0]} - {pick_record[1]}')
+        predict_percentage = round(pick_record[0] / (pick_record[0] + pick_record[1]) * 100, 2)
+        print(f'Predicted {predict_percentage}% of games correctly!')
 
     return predict_percentage
 

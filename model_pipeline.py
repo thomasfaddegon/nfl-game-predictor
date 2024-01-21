@@ -9,7 +9,7 @@ def run_model_variations(testing_year=2023):
     year_ranges = [(2023 - years + 1, 2023) for years in [1, 2, 5, 10]]
     scale_options = [False, True]
     regularization_types = [None, 'ridge', 'lasso', 'elasticnet']
-    regularization_strengths = [0.2, 0.4, 0.6, 0.8, 1.0]
+    regularization_strengths = [0.01, 0.1, 1, 10, 100]
     feature_removal_options = [True, False]
 
     results = []
@@ -22,15 +22,13 @@ def run_model_variations(testing_year=2023):
                         print(f"*** Model for {start_year} to {end_year} with scaling={scale}, reg={reg_type}, alpha={alpha}, features_removed={remove_features} ***")
 
                         # Model name based on configuration
-                        model_name = f"model_{start_year}_{end_year}_{'scaled' if scale else 'unscaled'}_{reg_type or 'none'}_{alpha or ''}_{'features_removed' if remove_features else 'features_included'}"
+                        model_name = f"model_{start_year}_{end_year}_{'scaled' if scale else 'unscaled'}_{reg_type or 'none'}_{alpha or '0'}_{'features_removed' if remove_features else 'features_included'}"
 
                         # Train the model
-                        mse = train_model(start_year, end_year, model_name, use_scaling=scale, regularization=reg_type, alpha=alpha, remove_features=remove_features)
-
-                        # model = load(f'models/{model_name}.joblib')
+                        mse, r_squared = train_model(start_year, end_year, model_name, use_scaling=scale, regularization=reg_type, alpha=alpha, remove_features=remove_features)
 
                         # Load the trained model and predict season games
-                        accuracy = predict_season_games([model_name], testing_year, remove_features=remove_features)
+                        accuracy = predict_season_games([model_name], testing_year, remove_features=remove_features, print_results=False)
 
                         # Store results
                         results.append({
@@ -41,6 +39,7 @@ def run_model_variations(testing_year=2023):
                             'Alpha': alpha,
                             'Features Removed': remove_features,
                             'MSE': mse,
+                            'R-Squared': r_squared,
                             'Accuracy': accuracy,
                             'Model Name': model_name
                         })
