@@ -10,7 +10,7 @@ def run_model_variations(testing_year=2023):
     scale_options = [False, True]
     regularization_types = [None, 'ridge', 'lasso', 'elasticnet']
     regularization_strengths = [0.2, 0.4, 0.6, 0.8, 1.0]
-    feature_removal_options = [True, False]
+    feature_removal_options = [False]
 
     results = []
 
@@ -20,16 +20,17 @@ def run_model_variations(testing_year=2023):
                 for alpha in regularization_strengths if reg_type else [None]:
                     for remove_features in feature_removal_options:
                         print(f"*** Model for {start_year} to {end_year} with scaling={scale}, reg={reg_type}, alpha={alpha}, features_removed={remove_features} ***")
+
                         # Model name based on configuration
                         model_name = f"model_{start_year}_{end_year}_{'scaled' if scale else 'unscaled'}_{reg_type or 'none'}_{alpha or ''}_{'features_removed' if remove_features else 'features_included'}"
 
                         # Train the model
                         mse = train_model(start_year, end_year, model_name, use_scaling=scale, regularization=reg_type, alpha=alpha, remove_features=remove_features)
 
-                        model = load(f'models/{model_name}.joblib')
+                        # model = load(f'models/{model_name}.joblib')
 
                         # Load the trained model and predict season games
-                        accuracy = predict_season_games(model, testing_year, remove_features=remove_features)
+                        accuracy = predict_season_games([model_name], testing_year, remove_features=remove_features)
 
                         # Store results
                         results.append({

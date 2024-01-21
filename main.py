@@ -21,7 +21,7 @@ top_models = [
     "model_2014_2023_unscaled_ridge_1.0_features_included"
 ]
 
-# predict_game_score('Steelers', 'Bills', top_models, 2023, print_results=True)
+# predict_game_score('Ste"elers', 'Bills', top_models, 2023, print_results=True)
 
 # predict_wild_card_round(top_models)
 

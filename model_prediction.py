@@ -1,20 +1,12 @@
 import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
-from sklearn.metrics import mean_squared_error
-from sklearn.inspection import permutation_importance
-from sklearn.preprocessing import StandardScaler
 from feature_engineering import create_game_features
 from utils import get_team_name
-from joblib import dump
 from joblib import load
 import os
 
-def predict_game_score(away_team, home_team, models, season=2023, print_results=False, remove_features=False):
+def predict_game_score(away_team, home_team, model_names, season=2023, print_results=False, remove_features=False):
     print('running prediction...')
+    print(model_names)
     # Create game features
     home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
 
@@ -24,13 +16,14 @@ def predict_game_score(away_team, home_team, models, season=2023, print_results=
     home_wins = 0
     away_wins = 0
 
-    for i, model in enumerate(models):
-        model_path = f"models/{model}.joblib"
-        model = load(model_path)
+    for model_name in model_names:
+        print(model_name)
+        model_path = f"models/{model_name}.joblib"
+        loaded_model = load(model_path)
         print(model_path, os.path.exists(model_path))
 
-        home_score = model.predict(home_features)[0]
-        away_score = model.predict(away_features)[0]
+        home_score = loaded_model.predict(home_features)[0]
+        away_score = loaded_model.predict(away_features)[0]
         home_scores.append(home_score)
         away_scores.append(away_score)
 
@@ -44,20 +37,24 @@ def predict_game_score(away_team, home_team, models, season=2023, print_results=
         print(f'{home_team} {home_wins} - {away_team} {away_wins}')
 
         print('Avg Score:')
-        print(f'{home_team} {round(sum(home_scores) / len(models))} - {away_team} {round(sum(away_scores) / len(models))}')
+        print(f'{home_team} {round(sum(home_scores) / len(model_names))} - {away_team} {round(sum(away_scores) / len(model_names))}')
 
         print('Scores:')
-        for i, model_name in enumerate(models):
+        for i, model_name in enumerate(model_names):
             print(f'{model_name}: {home_team} {round(home_scores[i])}, {away_team} {round(away_scores[i])}')
 
     # Determine the winner based on average scores
-    winner = home_team if round(sum(home_scores) / len(models)) > round(sum(away_scores) / len(models)) else away_team
+    winner = home_team if round(sum(home_scores) / len(model_names)) > round(sum(away_scores) / len(model_names)) else away_team
 
-    return winner, home_scores, away_scores
+    avg_home_score = round(sum(home_scores) / len(model_names))
+    avg_away_score = round(sum(away_scores) / len(model_names))
+
+    return winner, avg_home_score, avg_away_score
 
 
-def predict_season_games(model, season=2023, remove_features=False):
+def predict_season_games(model_names, season=2023, remove_features=False):
     print('predicting games...')
+
     # Load the scores data and filter by season
     scores_df = pd.read_csv('data/scores.csv')
     filtered_scores_df = scores_df[(scores_df['season'] == season)].copy().reset_index(drop=True)
@@ -74,7 +71,7 @@ def predict_season_games(model, season=2023, remove_features=False):
         # print(f'{game["away_team"]} @ {game["home_team"]}')
         acutal_winner = game['away_team'] if game['away_score'] >= game['home_score'] else game['home_team']
 
-        predicted_winner = predict_game_score(game['away_team'], game['home_team'], model, season, remove_features)
+        predicted_winner = predict_game_score(game['away_team'], game['home_team'], model_names, season, remove_features)
 
         if (predicted_winner[0] == acutal_winner):
             pick_record[0] += 1
