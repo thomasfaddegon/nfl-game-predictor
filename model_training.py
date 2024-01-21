@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
-from utils import get_team_name
+from utils import get_team_name, remove_features_from_dataframe
 from joblib import dump
 from feature_engineering import create_game_features
 
@@ -51,26 +51,13 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
 
     # Define the features to remove if remove_features is True
     if remove_features:
-        features_to_remove = [
-            'Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G',
-            'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS',
-            'Defense_Rushing_TOTAL PTS'
-        ]
-
-        # features_to_remove = ['Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G', 'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS', 'Defense_Rushing_TOTAL PTS',
-        #                         'Defense_Passing_SACK YDS', 'Offense_Passing_SACKS',
-        #                         'Defense_Passing_TD', 'Defense_Rushing_TOP', 'Defense_Rushing_ATT',
-        #                         'Offense_Passing_INT', 'Offense_Rushing_ATT', 'Offense_Rushing_YDS/ATT',
-        #                         'Offense_Rushing_TOP', 'Offense_Rushing_YDS']
-        season_features = season_features.drop(columns=features_to_remove, errors='ignore')
+        season_features = remove_features_from_dataframe(season_features)
 
     # Create X
     X = pd.concat([X, season_features])
 
     # Remove game_id column
     X = X.drop(['game_id'], axis=1)
-
-    print(X)
 
 
     # Create X and y

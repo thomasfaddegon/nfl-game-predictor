@@ -1,14 +1,19 @@
 import pandas as pd
 from feature_engineering import create_game_features
-from utils import get_team_name
+from utils import get_team_name, remove_features_from_dataframe
 from joblib import load
 import os
 
 def predict_game_score(away_team, home_team, model_names, season=2023, print_results=False, remove_features=False):
-    print('running prediction...')
-    print(model_names)
+
+
     # Create game features
     home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
+
+    if remove_features:
+        home_features = remove_features_from_dataframe(home_features)
+        away_features = remove_features_from_dataframe(away_features)
+
 
     # Predict the score for each model
     home_scores = []
@@ -17,10 +22,8 @@ def predict_game_score(away_team, home_team, model_names, season=2023, print_res
     away_wins = 0
 
     for model_name in model_names:
-        print(model_name)
         model_path = f"models/{model_name}.joblib"
         loaded_model = load(model_path)
-        print(model_path, os.path.exists(model_path))
 
         home_score = loaded_model.predict(home_features)[0]
         away_score = loaded_model.predict(away_features)[0]
@@ -71,7 +74,7 @@ def predict_season_games(model_names, season=2023, remove_features=False):
         # print(f'{game["away_team"]} @ {game["home_team"]}')
         acutal_winner = game['away_team'] if game['away_score'] >= game['home_score'] else game['home_team']
 
-        predicted_winner = predict_game_score(game['away_team'], game['home_team'], model_names, season, remove_features)
+        predicted_winner = predict_game_score(game['away_team'], game['home_team'], model_names, season, print_results=False, remove_features=remove_features)
 
         if (predicted_winner[0] == acutal_winner):
             pick_record[0] += 1

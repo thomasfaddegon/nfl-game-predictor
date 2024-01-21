@@ -1,5 +1,6 @@
 import pandas as pd
 from data_processing import load_and_clean_offense_defense_data
+from utils import remove_features_from_dataframe
 
 def create_game_features(home_team, away_team, season, remove_features=False):
     # Load and clean offense and defense data
@@ -52,12 +53,7 @@ def create_game_features(home_team, away_team, season, remove_features=False):
 
     # Remove specified features
     if remove_features:
-        features_to_remove = [
-            'Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G',
-            'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS',
-            'Defense_Rushing_TOTAL PTS'
-        ]
-        home_features.drop(columns=features_to_remove, errors='ignore', inplace=True)
-        away_features.drop(columns=features_to_remove, errors='ignore', inplace=True)
+        home_features = remove_features_from_dataframe(home_features)
+        away_features = remove_features_from_dataframe(away_features)
 
     return home_features, away_features

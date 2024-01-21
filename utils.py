@@ -76,3 +76,21 @@ def get_team_acronym(team_name):
     }
 
     return team_acronyms.get(team_name, "Unknown")
+
+def remove_features_from_dataframe(df):
+
+    features_to_remove = [
+        'Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G',
+        'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS',
+        'Defense_Rushing_TOTAL PTS, Defense_Passing_TOTAL PTS',
+    ]
+
+    return df.drop(columns=features_to_remove, errors='ignore')
+
+
+
+# features_to_remove = ['Offense_Passing_PTS/G', 'Offense_Rushing_PTS/G', 'Offense_Rushing_TOTAL PTS', 'Offense_Passing_TOTAL PTS', 'Defense_Rushing_TOTAL PTS',
+    #                         'Defense_Passing_SACK YDS', 'Offense_Passing_SACKS',
+    #                         'Defense_Passing_TD', 'Defense_Rushing_TOP', 'Defense_Rushing_ATT',
+    #                         'Offense_Passing_INT', 'Offense_Rushing_ATT', 'Offense_Rushing_YDS/ATT',
+    #                         'Offense_Rushing_TOP', 'Offense_Rushing_YDS']
