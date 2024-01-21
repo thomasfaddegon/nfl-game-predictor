@@ -2,18 +2,10 @@ import pandas as pd
 from feature_engineering import create_game_features
 from utils import get_team_name, remove_features_from_dataframe
 from joblib import load
+from sklearn.preprocessing import RobustScaler
 import os
 
 def predict_game_score(away_team, home_team, model_names, season=2023, print_results=False, remove_features=False):
-
-
-    # Create game features
-    home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
-
-    if remove_features:
-        home_features = remove_features_from_dataframe(home_features)
-        away_features = remove_features_from_dataframe(away_features)
-
 
     # Predict the score for each model
     home_scores = []
@@ -22,11 +14,33 @@ def predict_game_score(away_team, home_team, model_names, season=2023, print_res
     away_wins = 0
 
     for model_name in model_names:
+        remove_features = 'features_removed' in model_name
+        is_scaled = 'unscaled' not in model_name
+
+
+         # Create game features with or without feature removal
+        home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
+
+        if is_scaled:
+            # Load the scaler
+            scaler_path = f"models/scaler_{model_name}.joblib"
+            scaler = load(scaler_path)
+
+            # Apply scaling to features
+            home_features = scaler.transform(home_features)
+            away_features = scaler.transform(away_features)
+
+
+        # Load the model
+
         model_path = f"models/{model_name}.joblib"
         loaded_model = load(model_path)
 
         home_score = loaded_model.predict(home_features)[0]
         away_score = loaded_model.predict(away_features)[0]
+
+        print ('model name in prediction: ', model_name)
+
         home_scores.append(home_score)
         away_scores.append(away_score)
 
@@ -56,7 +70,7 @@ def predict_game_score(away_team, home_team, model_names, season=2023, print_res
 
 
 def predict_season_games(model_names, season=2023, remove_features=False, print_results=False):
-    print('predicting games...')
+    # print(f'predicting games for {season}')
 
     # Load the scores data and filter by season
     scores_df = pd.read_csv('data/scores.csv')
@@ -81,9 +95,9 @@ def predict_season_games(model_names, season=2023, remove_features=False, print_
         else:
             pick_record[1] += 1
 
+    predict_percentage = round(pick_record[0] / (pick_record[0] + pick_record[1]) * 100, 2)
     if print_results:
         print(f'Picks: {pick_record[0]} - {pick_record[1]}')
-        predict_percentage = round(pick_record[0] / (pick_record[0] + pick_record[1]) * 100, 2)
         print(f'Predicted {predict_percentage}% of games correctly!')
 
     return predict_percentage
@@ -96,10 +110,10 @@ def predict_wild_card_round (models):
     predict_game_score('Rams', 'Lions', models, print_results=True)
     predict_game_score('Eagles', 'Buccaneers', models, print_results=True)
 
-def predict_divisional_round (models, remove_features=False):
-    predict_game_score('Texans', 'Ravens', models, print_results=True, remove_features=remove_features)
-    predict_game_score('Packers', '49ers', models, print_results=True, remove_features=remove_features)
-    predict_game_score('Buccaneers', 'Lions', models, print_results=True, remove_features=remove_features)
-    predict_game_score('Chiefs', 'Bills',  models, print_results=True, remove_features=remove_features)
+def predict_divisional_round (models, print_results=False):
+    predict_game_score('Texans', 'Ravens', models, print_results=True,)
+    predict_game_score('Packers', '49ers', models, print_results=True,)
+    predict_game_score('Buccaneers', 'Lions', models, print_results=True,)
+    predict_game_score('Chiefs', 'Bills',  models, print_results=True,)
 
 

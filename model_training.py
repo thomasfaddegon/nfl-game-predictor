@@ -3,7 +3,7 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import RobustScaler, StandardScaler
 from utils import get_team_name, remove_features_from_dataframe
 from joblib import dump
 from feature_engineering import create_game_features
@@ -74,14 +74,17 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
     # Apply scaling if specified
     if use_scaling:
         scaler = StandardScaler()
-        X_train_scaled = scaler.fit_transform(X_train)
-        X_test_scaled = scaler.transform(X_test)
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.transform(X_test)
 
         # Convert scaled arrays back into DataFrames to prevent warnings
-        X_train = pd.DataFrame(X_train_scaled, columns=X.columns)
-        X_test = pd.DataFrame(X_test_scaled, columns=X.columns)
-    else:
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train = pd.DataFrame(X_train, columns=X.columns)
+        X_test = pd.DataFrame(X_test, columns=X.columns)
+
+        print('model name in training: ', model_name)
+
+        # Save the scaler for later use in predictions
+        dump(scaler, f'models/scaler_{model_name}.joblib')
 
     # Choose the model based on regularization type
     if regularization == 'ridge':

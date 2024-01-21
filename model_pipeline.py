@@ -1,10 +1,11 @@
+from statistics import mean
 import pandas as pd
 from joblib import load
 from model_training import train_model
 from model_prediction import predict_season_games
 
 
-def run_model_variations(testing_year=2023):
+def run_model_variations():
     # Parameters
     year_ranges = [(2023 - years + 1, 2023) for years in [1, 2, 5, 10]]
     scale_options = [False, True]
@@ -27,8 +28,14 @@ def run_model_variations(testing_year=2023):
                         # Train the model
                         mse, r_squared = train_model(start_year, end_year, model_name, use_scaling=scale, regularization=reg_type, alpha=alpha, remove_features=remove_features)
 
-                        # Load the trained model and predict season games
-                        accuracy = predict_season_games([model_name], testing_year, remove_features=remove_features, print_results=False)
+                        # Load the trained model and predict season games for last three years to determine accuracy
+                        print('predicting games for the last 3 years...')
+                        accuracy2021 = predict_season_games([model_name], 2021, remove_features=remove_features, print_results=False)
+                        accuracy2022 = predict_season_games([model_name], 2022, remove_features=remove_features, print_results=False)
+                        accuracy2023 = predict_season_games([model_name], 2023, remove_features=remove_features, print_results=False)
+                        average_accuracy = mean([accuracy2021, accuracy2022, accuracy2023])
+                        print(f'Average accuracy: {average_accuracy}')
+
 
                         # Store results
                         results.append({
@@ -40,14 +47,14 @@ def run_model_variations(testing_year=2023):
                             'Features Removed': remove_features,
                             'MSE': mse,
                             'R-Squared': r_squared,
-                            'Accuracy': accuracy,
+                            'Accuracy': average_accuracy,
                             'Model Name': model_name
                         })
 
     # Convert results to DataFrame and sort
     results_df = pd.DataFrame(results)
     sorted_results = results_df.sort_values(by=['Accuracy', 'MSE'], ascending=[False, True])
-    sorted_results.to_csv(f'results/results{testing_year}.csv', index=False)
+    sorted_results.to_csv(f'results/results_2021_2023.csv', index=False)
 
     # Print or return the sorted results
     # print(sorted_results)
