@@ -14,6 +14,8 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
 
     X = pd.DataFrame()
 
+    all_season_features = []
+
     for current_season in range(start_year, end_year + 1):
         print(f'Creating features for {current_season}...')
         # Filter scores by the current season
@@ -45,17 +47,18 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
 
         # Combine all the features for the season
         season_features = pd.concat(season_combined_features, ignore_index=True)
+        all_season_features.append(season_features)
 
-
-    # Optional: Save the features to a file
-    # X.to_csv('x.csv', index=False)
 
     # Define the features to remove if remove_features is True
     if remove_features:
         season_features = remove_features_from_dataframe(season_features)
 
     # Create X
-    X = pd.concat([X, season_features])
+    X = pd.concat(all_season_features, ignore_index=True)
+
+    # Optional: Save the features to a file
+    X.to_csv('x.csv', index=False)
 
     # Remove game_id column
     X = X.drop(['game_id'], axis=1)
