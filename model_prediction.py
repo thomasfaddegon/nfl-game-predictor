@@ -26,9 +26,13 @@ def predict_game_score(away_team, home_team, model_names, season=2023, print_res
             scaler_path = f"models/scaler_{model_name}.joblib"
             scaler = load(scaler_path)
 
-            # Apply scaling to features
-            home_features = scaler.transform(home_features)
-            away_features = scaler.transform(away_features)
+             # Apply scaling to features
+            home_features_scaled = scaler.transform(home_features)
+            away_features_scaled = scaler.transform(away_features)
+
+            # Convert scaled arrays back to DataFrames with original feature names
+            home_features = pd.DataFrame(home_features_scaled, columns=home_features.columns)
+            away_features = pd.DataFrame(away_features_scaled, columns=away_features.columns)
 
 
         # Load the model
@@ -38,8 +42,6 @@ def predict_game_score(away_team, home_team, model_names, season=2023, print_res
 
         home_score = loaded_model.predict(home_features)[0]
         away_score = loaded_model.predict(away_features)[0]
-
-        print ('model name in prediction: ', model_name)
 
         home_scores.append(home_score)
         away_scores.append(away_score)

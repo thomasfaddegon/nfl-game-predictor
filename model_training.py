@@ -81,8 +81,6 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
         X_train = pd.DataFrame(X_train, columns=X.columns)
         X_test = pd.DataFrame(X_test, columns=X.columns)
 
-        print('model name in training: ', model_name)
-
         # Save the scaler for later use in predictions
         dump(scaler, f'models/scaler_{model_name}.joblib')
 
