@@ -1,3 +1,6 @@
+import sys
+print("Python Executable:", sys.executable)
+
 from joblib import load
 from model_prediction import predict_season_games, predict_super_bowl, predict_wild_card_round, predict_divisional_round, predict_conference_championships
 from model_pipeline import run_model_variations
@@ -29,6 +32,6 @@ best_model = "model_2022_2023_unscaled_ridge_1_features_included"
 
 # predict_divisional_round(scaled_model)
 
-# predict_wild_card_round(top_models_10, print_results=True)
+predict_wild_card_round(top_models_10, print_results=True)
 
 predict_super_bowl([best_model], print_results=True)
