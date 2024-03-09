@@ -104,7 +104,7 @@ def predict_season_games(model_names, season=2023, remove_features=False, print_
 
     return predict_percentage
 
-def predict_wild_card_round (models):
+def predict_wild_card_round (models, print_results):
     predict_game_score('Browns', 'Texans', models, print_results=True)
     predict_game_score('Dolphins', 'Chiefs', models, print_results=True)
     predict_game_score('Steelers', 'Bills', models, print_results=True)
@@ -118,4 +118,10 @@ def predict_divisional_round (models, print_results=False):
     predict_game_score('Buccaneers', 'Lions', models, print_results=True,)
     predict_game_score('Chiefs', 'Bills',  models, print_results=True,)
 
+def predict_conference_championships (models, print_results=False):
+    predict_game_score('Chiefs', 'Ravens', models, print_results=True,)
+    predict_game_score('Lions', '49ers', models, print_results=True,)
+
+def predict_super_bowl (models, print_results=False):
+    predict_game_score('49ers', 'Chiefs', models, print_results=True,)
 

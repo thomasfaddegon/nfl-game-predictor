@@ -355,7 +355,7 @@ model1 = load('models/finalized/model_2014_2023_false_ridge_unscaled.joblib')
 model2 = load('models/finalized/model_2019_2023_false_ridge_unscaled.joblib')
 
 
-train_model(2023, 2023, 'finalized/model_2023_2023,false_ridge_unscaled', regularization='lasso', use_scaling=False, regularization=0.6, alpha=0.5, remove_features=False)
+train_model(2023, 2023, 'finalized/model_2023_2023,false_ridge_unscaled', regularization='lasso', use_scaling=False, alpha=0.5, remove_features=False)
 
 
 predict_wild_card_round([model1, model2])
