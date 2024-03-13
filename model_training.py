@@ -106,7 +106,19 @@ def train_model(start_year, end_year, model_name, use_scaling=False, regularizat
     print(f"Mean Squared Error: {mse}")
     print(f"R^2: {r_squared}")
 
+     # Print or visualize feature importance
+    # if hasattr(model, 'coef_'):
+    #     print("Coefficients (Feature Importance):")
+    #     for feature, coef in zip(X.columns, model.coef_):
+    #         print(f"{feature}: {coef}")
+    # elif hasattr(model, 'feature_importances_'):
+    #     print("Feature Importances:")
+    #     for feature, importance in zip(X.columns, model.feature_importances_):
+    #         print(f"{feature}: {importance}")
+    # else:
+    #     print("Model does not support feature importance analysis.")
+
     # Save the model
-    dump(model, f'models/{model_name}.joblib')
+    dump(model, f'models/all_models/{model_name}.joblib')
 
     return mse, r_squared

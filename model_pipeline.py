@@ -1,6 +1,5 @@
 from statistics import mean
 import pandas as pd
-from joblib import load
 from model_training import train_model
 from model_prediction import predict_season_games
 
