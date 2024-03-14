@@ -7,6 +7,8 @@ function App() {
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
 
+  console.log("result:", result);
+
   const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
     setTeams((prevTeams) => ({
@@ -45,6 +47,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
+        setResult(data.predictions);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -94,6 +97,11 @@ function App() {
           Predict
         </button>
       </div>
+      {result && (
+        <h3 className="mt-8">
+          {result[0]} win, {result[1]} to {result[2]}
+        </h3>
+      )}
     </div>
   );
 }

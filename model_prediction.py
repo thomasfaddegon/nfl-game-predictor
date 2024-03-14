@@ -5,7 +5,8 @@ from joblib import load
 from sklearn.preprocessing import RobustScaler
 import os
 
-def predict_game_score(away_team, home_team, model_names, season=2023, print_results=False, remove_features=False):
+
+def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unscaled_ridge_1_features_included'], season=2023, print_results=False, remove_features=False):
 
     # Predict the score for each model
     home_scores = []

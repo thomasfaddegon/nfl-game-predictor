@@ -7,7 +7,6 @@ To deactivate the virtual environment, simply run:
 `deactivate`
 
 I've had a lot of problems with VScode not recognizing the virutal environment, so I've had to continually reinstall the environment. Run this code to reinstall the necessary packages:
-`pip install pandas scikit-learn selenium`
+`pip install pandas scikit-learn selenium flask flask-cors`
 
-To silence the warnings, adjust scikt-learn's version:
-`
+If you have trouble with modules not benig loaded, restart the app. If that doesn't work, try reinstalling the virtual environment.
