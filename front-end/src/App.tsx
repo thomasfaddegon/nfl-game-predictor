@@ -4,10 +4,17 @@ import { nflTeams } from "../utils.ts";
 
 function App() {
   const [teams, setTeams] = useState({ awayTeam: "", homeTeam: "" });
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState([]);
   const [error, setError] = useState("");
 
-  console.log("result:", result);
+  let awayScore, homeScore;
+  if (result && teams.homeTeam === result[0]) {
+    awayScore = Math.min(...result);
+    homeScore = Math.max(...result);
+  } else {
+    awayScore = Math.max(...result);
+    homeScore = Math.min(...result);
+  }
 
   const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -37,10 +44,13 @@ function App() {
 
   const handleSubmit = () => {
     if (errorCheck()) return;
+    console.log("teams:", teams);
+    console.log("fetching results");
     fetch("/api/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(teams),
     })
@@ -89,7 +99,7 @@ function App() {
         </div>
       </div>
       {error && <p className="text-red-500">{error}</p>}
-      <div>
+      <div className="flex flex-col gap-5">
         <button
           onClick={handleSubmit}
           className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -99,7 +109,13 @@ function App() {
       </div>
       {result && (
         <h3 className="mt-8">
-          {result[0]} win, {result[1]} to {result[2]}
+          <div>
+            {teams.awayTeam}: {awayScore}
+          </div>
+          <div>
+            {teams.homeTeam}: {homeScore}
+          </div>
+          {result[0]} wins!
         </h3>
       )}
     </div>

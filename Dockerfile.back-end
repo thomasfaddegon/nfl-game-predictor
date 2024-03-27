@@ -1,0 +1,38 @@
+# Use the official Python image as a parent image
+FROM python:3.9
+
+# Set the working directory in the container to /app since we need files from the root directory
+WORKDIR /app
+
+# Copy the whole application to the container
+COPY . /app
+
+# Copy the back-end dependencies file to the container
+COPY requirements.txt ./
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Set the FLASK_APP environment variable
+ENV FLASK_APP=api.py
+
+# Make sure Flask runs in production mode
+ENV FLASK_ENV=production
+
+# Run the Flask application on port 6000
+CMD ["flask", "run", "--host=0.0.0.0", "--port=6000"]
+
+# Expose port 6000 to allow communication to/from server
+EXPOSE 6000
+
+
+
+#consider using gunicorn to run the Flask application in production
+# Install Gunicorn
+# RUN pip install gunicorn
+
+# # Expose the port the app runs on
+# EXPOSE 5000
+
+# # Run the Flask application with Gunicorn
+# CMD ["gunicorn", "--bind", "0.0.0.0:000", "api:app"]

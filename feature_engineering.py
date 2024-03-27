@@ -35,8 +35,8 @@ def create_game_features(home_team, away_team, season, remove_features=False):
     away_team_defense_final = away_team_defense.drop(['Defense_Passing_TEAM', 'Defense_Rushing_TEAM'], axis=1)
 
     # Combine the stats to create a feature set for prediction
-    home_features = pd.concat([home_team_offense_final , away_team_defense_final], axis=1)
-    away_features = pd.concat([away_team_offense_final , home_team_defense_final ], axis=1)
+    home_features = pd.concat([home_team_offense_final, away_team_defense_final], axis=1)
+    away_features = pd.concat([away_team_offense_final, home_team_defense_final], axis=1)
 
     # Check for NaN values and log them
     if home_features.isnull().values.any():

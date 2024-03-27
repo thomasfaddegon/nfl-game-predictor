@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  back-end:
+    build:
+      context: .
+      dockerfile: Dockerfile.back-end
+    ports:
+      - "6000:6000"
+    environment:
+      - FLASK_APP=api.py
+      - FLASK_ENV=production
+
+  front-end:
+    build:
+      context: .
+      dockerfile: Dockerfile.front-end
+    ports:
+      - "80:80"
+    depends_on:
+      - back-end

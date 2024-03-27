@@ -6,7 +6,10 @@ from sklearn.preprocessing import RobustScaler
 import os
 
 
-def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unscaled_ridge_1_features_included'], season=2023, print_results=False, remove_features=False):
+def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unscaled_elasticnet_1_features_included'], season=2023, away_season_year=None, home_season_year=None, print_results=False, remove_features=False):
+
+    away_season_year = away_season_year if away_season_year is not None else season
+    home_season_year = home_season_year if home_season_year is not None else season
 
     # Predict the score for each model
     home_scores = []
@@ -21,6 +24,9 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unsca
 
          # Create game features with or without feature removal
         home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
+
+        home_features = create_game_features(home_team, away_team, home_season_year, remove_features=remove_features)
+        away_features = create_game_features(away_team, home_team, away_season_year, remove_features=remove_features)
 
         if is_scaled:
             # Load the scaler
