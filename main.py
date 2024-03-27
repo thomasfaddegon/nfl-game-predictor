@@ -40,7 +40,10 @@ best_model = "model_2014_2023_scaled_lasso_0.01_features_included"
 
 # predict_game_score('49ers', 'Giants', away_season_year=2023, home_season_year=2020, print_results=True, remove_features=False)
 
-predict_game_score('49ers', 'Giants', print_results=True, remove_features=False)
+# predict_game_score('49ers', 'Giants', away_season_year=2011, home_season_year=2021, print_results=True, remove_features=False)
+
+predict_game_score('Dolphins', 'Chiefs', print_results=True, remove_features=False)
+
 
 # predict_wild_card_round(["model_2014_2023_scaled_ridge_1_features_removed"], print_results=True)
 

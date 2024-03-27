@@ -23,10 +23,11 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unsca
 
 
          # Create game features with or without feature removal
-        home_features, away_features = create_game_features(home_team, away_team, season, remove_features=remove_features)
+        home_features, away_features = create_game_features(home_team, away_team, home_season_year, away_season_year, remove_features=remove_features)
 
-        home_features = create_game_features(home_team, away_team, home_season_year, remove_features=remove_features)
-        away_features = create_game_features(away_team, home_team, away_season_year, remove_features=remove_features)
+
+        print(home_features)
+        print(away_features)
 
         if is_scaled:
             # Load the scaler
@@ -41,6 +42,10 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unsca
             home_features = pd.DataFrame(home_features_scaled, columns=home_features.columns)
             away_features = pd.DataFrame(away_features_scaled, columns=away_features.columns)
 
+        print(type(home_features), type(away_features))
+
+        print(f"Shape of home_features: {home_features.shape}")
+        print(f"Shape of away_features: {away_features.shape}")
 
         # Load the model
 

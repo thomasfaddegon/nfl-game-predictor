@@ -2,15 +2,16 @@ import pandas as pd
 from data_processing import load_and_clean_offense_defense_data
 from utils import remove_features_from_dataframe
 
-def create_game_features(home_team, away_team, season, remove_features=False):
+def create_game_features(home_team, away_team, home_team_season, away_team_season, remove_features=False):
     # Load and clean offense and defense data
-    offense_combined_df, defense_combined_df = load_and_clean_offense_defense_data(season)
+    offense_combined_df_home_season, defense_combined_df_home_season = load_and_clean_offense_defense_data(home_team_season)
+    offense_combined_df_away_season, defense_combined_df_away_season = load_and_clean_offense_defense_data(away_team_season)
 
     # Merge the data
-    home_team_offense = offense_combined_df[offense_combined_df['Offense_Passing_TEAM'] == home_team]
-    away_team_defense = defense_combined_df[defense_combined_df['Defense_Passing_TEAM'] == away_team]
-    away_team_offense = offense_combined_df[offense_combined_df['Offense_Passing_TEAM'] == away_team]
-    home_team_defense = defense_combined_df[defense_combined_df['Defense_Passing_TEAM'] == home_team]
+    home_team_offense = offense_combined_df_home_season[offense_combined_df_home_season['Offense_Passing_TEAM'] == home_team]
+    away_team_defense = defense_combined_df_away_season[defense_combined_df_away_season['Defense_Passing_TEAM'] == away_team]
+    away_team_offense = offense_combined_df_away_season[offense_combined_df_away_season['Offense_Passing_TEAM'] == away_team]
+    home_team_defense = defense_combined_df_home_season[defense_combined_df_home_season['Defense_Passing_TEAM'] == home_team]
 
     # Reset the index in place
     home_team_offense.reset_index(drop=True, inplace=True)
