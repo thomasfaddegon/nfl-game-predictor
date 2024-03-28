@@ -25,10 +25,6 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unsca
          # Create game features with or without feature removal
         home_features, away_features = create_game_features(home_team, away_team, home_season_year, away_season_year, remove_features=remove_features)
 
-
-        print(home_features)
-        print(away_features)
-
         if is_scaled:
             # Load the scaler
             scaler_path = f"models/scaler_{model_name}.joblib"
@@ -42,10 +38,6 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unsca
             home_features = pd.DataFrame(home_features_scaled, columns=home_features.columns)
             away_features = pd.DataFrame(away_features_scaled, columns=away_features.columns)
 
-        print(type(home_features), type(away_features))
-
-        print(f"Shape of home_features: {home_features.shape}")
-        print(f"Shape of away_features: {away_features.shape}")
 
         # Load the model
 
@@ -116,7 +108,7 @@ def predict_season_games(model_names, season=2023, remove_features=False, print_
 
     return predict_percentage
 
-def predict_wild_card_round (models, print_results):
+def predict_wild_card_round (models, print_results=False):
     predict_game_score('Browns', 'Texans', models, print_results=True)
     predict_game_score('Dolphins', 'Chiefs', models, print_results=True)
     predict_game_score('Steelers', 'Bills', models, print_results=True)

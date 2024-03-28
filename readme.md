@@ -19,25 +19,25 @@ If you have trouble with modules not benig loaded, restart the app. If that does
 
 # Predictions:
 
-## Wild Card (4-1-1)
+## Wild Card (5-1)
 
 Texans vs. Browns
-Predicted: Texans 24 Browns 20
+Predicted: Texans 34 Browns 21
 Line: Browns -2
 Actual: Texans 45, Browns 14
 
 Dolphins vs. Chiefs
-Predicted: Chiefs 23 Dolphins 23
+Predicted: Chiefs 24 Dolphins 23
 Line: Chiefs -4.5
 Acutal: Chiefs 26, Dolphins 7
 
 Bills vs. Steelers
-Predicted: Bills 25, Steelers 15
+Predicted: Bills 25, Steelers 14
 Line: Bills -10
 Actual: Bills 31, Steelers 17
 
 Cowboys vs. Packers
-Predicted: Cowboys 26, Packers 20
+Predicted: Cowboys 29, Packers 19
 Line: Cowboys -7
 Actual: Packers 48, Cowboys 32
 
@@ -47,7 +47,7 @@ Line: Lions -3
 Actual: Lions 24, Rams 23
 
 Buccaneers vs. Eagles
-Predicted: Buccaneers 25, Eagles 21
+Predicted: Buccaneers 24, Eagles 21
 Line: Eagles -2.5
 Actual: Buccaneers 32, 9
 
@@ -59,35 +59,35 @@ Line: Ravens -10
 Acutal: Ravens 34, Texans 10
 
 Chiefs vs. Bills
-Predicted: Chiefs 17, Bills 23
+Predicted: Chiefs 17, Bills 22
 Line: Bills -2
 Actual: Chiefs 27, Bills 24
 
 49ers vs. Packers
-Predicted: 49ers 30, Packers 19
+Predicted: 49ers 28, Packers 17
 Line: 49ers -10
 Actual: 49ers 24, Packers 21
 
 Lions vs. Buccaneers
-Predicted: Lions 27, Buccaneers 22
+Predicted: Lions 25, Buccaneers 21
 Line Lions -6
-Actual: Buccaneers 31, Lions 23
+Actual: Lions 31, Buccaneers 23
 
 ## Conference Championship (1-1)
 
 Ravens vs. Chiefs
-Predicted: Ravens 25, Chiefs 15
+Predicted: Ravens 24, Chiefs 15
 Line: Ravens -4.5
 Actual: Chiefs 17, Ravens 10
 
 49ers vs. Lions
-Predicted: 49ers 33, Lions 23
+Predicted: 49ers 31, Lions 21
 Line: 49ers -7.5
 Actual: 49ers 34, Lions 31
 
 ## Super Bowl (0-1)
 
 Chiefs vs. 49ers
-Predicted: Chiefs 18, 49ers 25
+Predicted: Chiefs 18, 49ers 23
 Line: 49ers -2
 Actual: Chiefs 25, 49ers 22

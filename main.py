@@ -38,23 +38,14 @@ top_models_10 = [
 
 best_model = "model_2014_2023_scaled_lasso_0.01_features_included"
 
-# predict_game_score('49ers', 'Giants', away_season_year=2023, home_season_year=2020, print_results=True, remove_features=False)
 
-# predict_game_score('49ers', 'Giants', away_season_year=2011, home_season_year=2021, print_results=True, remove_features=False)
+# predict_game_score('Dolphins', 'Chiefs', print_results=True, remove_features=False)
 
-predict_game_score('Dolphins', 'Chiefs', print_results=True, remove_features=False)
-
-
-# predict_wild_card_round(["model_2014_2023_scaled_ridge_1_features_removed"], print_results=True)
-
-# predict_super_bowl(["model_2014_2023_scaled_ridge_1_features_removed"], print_results=True)
+predict_wild_card_round([best_model])
+predict_divisional_round([best_model])
+predict_conference_championships([best_model])
+predict_super_bowl([best_model])
 
 
-# predict_divisional_round(scaled_model)
-
-# train_model(2022, 2023, "model_2022_2023_unscaled_ridge_1_features_included", use_scaling=False, regularization='ridge', alpha=1, remove_features=False)
-
-# predict_wild_card_round(["model_2014_2023_scaled_ridge_0.01_features_removed"], print_results=True)
-
-# predict_super_bowl([best_model], print_results=True)
+#
 
