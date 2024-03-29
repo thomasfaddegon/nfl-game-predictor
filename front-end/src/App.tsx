@@ -1,19 +1,33 @@
 import { useState } from "react";
 import "./App.css";
-import { nflTeams } from "../utils.ts";
+import { nflTeams, years } from "../utils.ts";
+import football from "./assets/football.png";
 
 function App() {
-  const [teams, setTeams] = useState({ awayTeam: "", homeTeam: "" });
+  const [teams, setTeams] = useState({
+    awayTeam: "Bears",
+    awayYear: "2023",
+    homeTeam: "Bengals",
+    homeYear: "2023",
+  });
   const [result, setResult] = useState([]);
   const [error, setError] = useState("");
+  const [resultTeams, setResultTeams] = useState({
+    awayTeam: "",
+    homeTeam: "",
+  });
 
+  // testing purposes
+  // const [result, setResult] = useState(["Bears", 12, 24]);
+
+  // calculate scores using existing structure of result
   let awayScore, homeScore;
-  if (result && teams.homeTeam === result[0]) {
-    awayScore = Math.min(...result);
-    homeScore = Math.max(...result);
+  if (result && resultTeams.homeTeam === result[0]) {
+    awayScore = Math.min(result[1] as number, result[2] as number);
+    homeScore = Math.max(result[1] as number, result[2] as number);
   } else {
-    awayScore = Math.max(...result);
-    homeScore = Math.min(...result);
+    awayScore = Math.max(result[1] as number, result[2] as number);
+    homeScore = Math.min(result[1] as number, result[2] as number);
   }
 
   const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,8 +58,6 @@ function App() {
 
   const handleSubmit = () => {
     if (errorCheck()) return;
-    console.log("teams:", teams);
-    console.log("fetching results");
     fetch("/api/predict", {
       method: "POST",
       headers: {
@@ -58,23 +70,41 @@ function App() {
       .then((data) => {
         console.log("Success:", data);
         setResult(data.predictions);
+        setResultTeams({ awayTeam: teams.awayTeam, homeTeam: teams.homeTeam });
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 
+  console.log(teams);
+
   return (
     <div className="flex flex-col items-center">
+      <div className="mb-8">
+        <img src={football} alt="football" className="w-32 h-32" />
+      </div>
       <h1 className="mb-8">NFL Game Predictor</h1>
-      <div className="flex max-w-sm gap-8 justify-between flex-row">
-        <div>
+      <div className="flex max-w-sm gap-8 justify-center flex-col md:flex-row">
+        <div className="flex flex-row gap-2">
           <select
-            id="homeTeamsDropdown"
-            name="homeTeam"
+            id="awayYearDropdown"
+            name="awayYear"
             onChange={handleTeamChange}
+            defaultValue="2023"
           >
-            <option>Select a Team</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+          <select
+            id="awayTeamsDropdown"
+            name="awayTeam"
+            onChange={handleTeamChange}
+            defaultValue="Bears"
+          >
             {nflTeams.map((team) => (
               <option key={team} value={team}>
                 {team}
@@ -82,14 +112,26 @@ function App() {
             ))}
           </select>
         </div>
-
-        <div>
+        at
+        <div className="flex flex-row gap-2">
+          <select
+            id="homeYearDropdown"
+            name="homeYear"
+            onChange={handleTeamChange}
+            defaultValue="2023"
+          >
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
           <select
             id="homeTeamsDropdown"
-            name="awayTeam"
+            name="homeTeam"
             onChange={handleTeamChange}
+            defaultValue="Bengals"
           >
-            <option>Select a Team</option>
             {nflTeams.map((team) => (
               <option key={team} value={team}>
                 {team}
@@ -107,16 +149,18 @@ function App() {
           Predict
         </button>
       </div>
-      {result && (
-        <h3 className="mt-8">
-          <div>
-            {teams.awayTeam}: {awayScore}
+      {result.length > 1 && (
+        <div className="flex flex-col items-center justify-center gap-4">
+          <div className="mt-8 text-left text-2xl">
+            <div className="">
+              <strong>{resultTeams.awayTeam}:</strong> {awayScore}
+            </div>
+            <div>
+              <strong>{resultTeams.homeTeam}:</strong> {homeScore}
+            </div>
           </div>
-          <div>
-            {teams.homeTeam}: {homeScore}
-          </div>
-          {result[0]} wins!
-        </h3>
+          <div className="text-4xl font-bold text-center">{result[0]} win!</div>
+        </div>
       )}
     </div>
   );

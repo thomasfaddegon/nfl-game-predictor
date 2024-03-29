@@ -13,13 +13,17 @@ def index():
 # More routes go here
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    print('predicting...')
     data = request.json
+    print('data: ', data)
+    print('predicting...')
     away_team = data.get('awayTeam')
+    away_year = data.get('awayYear')
     home_team = data.get('homeTeam')
-    print(f'away: {away_team}, home: {home_team}')
+    home_year = data.get('homeYear')
 
-    predictions = predict_game_score(away_team, home_team,  season=2023, print_results=True, remove_features=False)
+    print(f'away_team: {away_team}, away_year: {away_year}, home_team: {home_team}, home_year: {home_year}')
+
+    predictions = predict_game_score(away_team, home_team, model_names=['model_2014_2023_scaled_lasso_0.01_features_included'], away_season_year=away_year, home_season_year=home_year)
 
     print(predictions)
 
