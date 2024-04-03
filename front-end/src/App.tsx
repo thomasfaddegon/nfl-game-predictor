@@ -17,9 +17,6 @@ function App() {
     homeTeam: "",
   });
 
-  // testing purposes
-  // const [result, setResult] = useState(["Bears", 12, 24]);
-
   // calculate scores using existing structure of result
   let awayScore, homeScore;
   if (result && resultTeams.homeTeam === result[0]) {
@@ -58,7 +55,7 @@ function App() {
 
   const handleSubmit = () => {
     if (errorCheck()) return;
-    fetch("/api/predict", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/predict`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +65,6 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
         setResult(data.predictions);
         setResultTeams({ awayTeam: teams.awayTeam, homeTeam: teams.homeTeam });
       })
