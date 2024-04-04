@@ -1,3 +1,4 @@
 node_modules
 **/results/*
 models/all_models/
+.venv
