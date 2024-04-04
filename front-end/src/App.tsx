@@ -73,8 +73,6 @@ function App() {
       });
   };
 
-  console.log(teams);
-
   return (
     <div className="flex flex-col items-center">
       <div className="mb-8">

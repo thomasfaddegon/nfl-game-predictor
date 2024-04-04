@@ -20,7 +20,7 @@ ENV FLASK_APP=api.py
 ENV FLASK_ENV=production
 
 # Run the Flask application on port 6000
-CMD ["flask", "run", "--host=0.0.0.0", "--port=6000"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=9090"]
 
 # Expose port 6000 to allow communication to/from server
 EXPOSE 6000
