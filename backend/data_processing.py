@@ -1,10 +1,13 @@
 import pandas as pd
+import os
+
 
 
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.expand_frame_repr', False)  # Prevent wrapping to next line
 
 def load_and_clean_offense_defense_data (year):
+    print("Current Working Directory:", os.getcwd())
     # Load the offense and defense data, rename the columns and drop unnecessary columns
     offense_passing_df = pd.read_csv(f'data/{year}/offense_passing_{year}.csv', index_col=0)
     offense_passing_df.columns = ['Offense_Passing_' + col for col in offense_passing_df.columns]
