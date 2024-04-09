@@ -6,7 +6,7 @@ from sklearn.preprocessing import RobustScaler
 import os
 
 
-def predict_game_score(away_team, home_team, model_names=['model_2014_2023_unscaled_elasticnet_1_features_included'], season=2023, away_season_year=None, home_season_year=None, print_results=False, remove_features=False):
+def predict_game_score(away_team, home_team, model_names=['model_2014_2023_scaled_lasso_0.1_features_included'], season=2023, away_season_year=None, home_season_year=None, print_results=False, remove_features=False):
 
     away_season_year = away_season_year if away_season_year is not None else season
     home_season_year = home_season_year if home_season_year is not None else season

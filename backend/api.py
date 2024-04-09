@@ -1,23 +1,31 @@
 from model_prediction import predict_game_score
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 
-
-app = Flask(__name__)
-
 # Determine CORS origins based on the environment
-def get_cors_origins():
-    # set production as default if it isn't already set
-    flask_env = os.environ.get('FLASK_ENV', 'development')
-    print('FLASK_ENV:', flask_env)
-    # Allow all origins in development
-    if flask_env == 'development':
-        return "*"
-    else:
-        return os.environ.get('CORS_ORIGINS')
+# def get_cors_origins():
+#     # set production as default if it isn't already set
+#     flask_env = os.environ.get('FLASK_ENV', 'development')
+#     print('FLASK_ENV:', flask_env)
+#     # Allow all origins in development
+#     if flask_env == 'development':
+#         return "*"
+#     else:
+#         return os.environ.get('CORS_ORIGINS')
 
-CORS(app, origins=get_cors_origins())
+# CORS(app, origins=get_cors_origins())
+
+app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_frontend(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api')
 def index():
@@ -35,7 +43,7 @@ def predict():
 
     print(f'away_team: {away_team}, away_year: {away_year}, home_team: {home_team}, home_year: {home_year}')
 
-    predictions = predict_game_score(away_team, home_team, model_names=['model_2014_2023_scaled_lasso_0.01_features_included'], away_season_year=away_year, home_season_year=home_year)
+    predictions = predict_game_score(away_team, home_team, model_names=['model_2014_2023_scaled_lasso_0.1_features_included'], away_season_year=away_year, home_season_year=home_year)
 
     print(predictions)
 

@@ -36,7 +36,7 @@ top_models_10 = [
 
 # predict_wild_card_round(top_models_10, print_results=True)
 
-best_model = "model_2014_2023_scaled_lasso_0.01_features_included"
+best_model = "model_2014_2023_scaled_lasso_0.1_features_included"
 
 
 # predict_game_score('Dolphins', 'Chiefs', print_results=True, remove_features=False)
