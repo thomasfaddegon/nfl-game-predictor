@@ -16,6 +16,8 @@ import os
 
 # CORS(app, origins=get_cors_origins())
 
+port = int(os.environ.get('PORT', 9090))
+
 app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
 
 
@@ -41,7 +43,7 @@ def predict():
     home_team = data.get('homeTeam')
     home_year = data.get('homeYear')
 
-    print(f'away_team: {away_team}, away_year: {away_year}, home_team: {home_team}, home_year: {home_year}')
+    # print(f'away_team: {away_team}, away_year: {away_year}, home_team: {home_team}, home_year: {home_year}')
 
     predictions = predict_game_score(away_team, home_team, model_names=['model_2014_2023_scaled_lasso_0.1_features_included'], away_season_year=away_year, home_season_year=home_year)
 
@@ -54,5 +56,5 @@ def test():
     return jsonify({"message": "Test endpoint reached"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9090, debug=os.environ.get('FLASK_DEBUG', 'False') == 'True')
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_DEBUG', 'False') == 'True')
 
