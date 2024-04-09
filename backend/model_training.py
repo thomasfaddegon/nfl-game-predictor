@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import RobustScaler, StandardScaler
-from utils import get_team_name, remove_features_from_dataframe
+from backend.utils import get_team_name, remove_features_from_dataframe
 from joblib import dump
 from feature_engineering import create_game_features
 

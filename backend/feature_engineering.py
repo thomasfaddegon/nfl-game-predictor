@@ -1,6 +1,6 @@
 import pandas as pd
-from data_processing import load_and_clean_offense_defense_data
-from utils import remove_features_from_dataframe
+from backend.data_processing import load_and_clean_offense_defense_data
+from backend.utils import remove_features_from_dataframe
 
 def create_game_features(home_team, away_team, home_team_season, away_team_season, remove_features=False):
     # Load and clean offense and defense data

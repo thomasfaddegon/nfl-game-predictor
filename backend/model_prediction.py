@@ -1,12 +1,16 @@
 import pandas as pd
-from feature_engineering import create_game_features
-from utils import get_team_name, remove_features_from_dataframe
+from backend.feature_engineering import create_game_features
+from backend.utils import get_team_name, remove_features_from_dataframe
 from joblib import load
 from sklearn.preprocessing import RobustScaler
 import os
 
 
 def predict_game_score(away_team, home_team, model_names=['model_2014_2023_scaled_lasso_0.1_features_included'], season=2023, away_season_year=None, home_season_year=None, print_results=False, remove_features=False):
+
+    #check if the current working directory is backend, if not prepend it (for running from the root directory of the project)
+    cwd = os.getcwd()
+    prefix = '' if cwd.endswith('backend') else 'backend/'
 
     away_season_year = away_season_year if away_season_year is not None else season
     home_season_year = home_season_year if home_season_year is not None else season
@@ -27,7 +31,7 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_scale
 
         if is_scaled:
             # Load the scaler
-            scaler_path = f"models/scaler_{model_name}.joblib"
+            scaler_path = f"{prefix}models/scaler_{model_name}.joblib"
             scaler = load(scaler_path)
 
              # Apply scaling to features
@@ -41,7 +45,7 @@ def predict_game_score(away_team, home_team, model_names=['model_2014_2023_scale
 
         # Load the model
 
-        model_path = f"models/{model_name}.joblib"
+        model_path = f"{prefix}models/{model_name}.joblib"
         loaded_model = load(model_path)
 
         home_score = loaded_model.predict(home_features)[0]

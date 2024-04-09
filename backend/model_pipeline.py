@@ -1,7 +1,7 @@
 from statistics import mean
 import pandas as pd
-from model_training import train_model
-from model_prediction import predict_season_games
+from backend.model_training import train_model
+from backend.model_prediction import predict_season_games
 
 
 def run_model_variations():

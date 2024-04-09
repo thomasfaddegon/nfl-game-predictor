@@ -3,19 +3,6 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 
-# Determine CORS origins based on the environment
-# def get_cors_origins():
-#     # set production as default if it isn't already set
-#     flask_env = os.environ.get('FLASK_ENV', 'development')
-#     print('FLASK_ENV:', flask_env)
-#     # Allow all origins in development
-#     if flask_env == 'development':
-#         return "*"
-#     else:
-#         return os.environ.get('CORS_ORIGINS')
-
-# CORS(app, origins=get_cors_origins())
-
 port = int(os.environ.get('PORT', 9090))
 
 app = Flask(__name__, static_folder='frontend/dist', static_url_path='/')
