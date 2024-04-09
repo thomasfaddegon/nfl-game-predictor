@@ -13,4 +13,11 @@ export default defineConfig({
       },
     },
   },
+  // set this to the frontend directory since build tool is in project root
+  root: "./frontend",
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
 });

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import react, { useState } from "react";
 import "./App.css";
 import { nflTeams, years } from "../utils.ts";
+
+// @ts-ignore;
 import football from "./assets/football.png";
+import React from "react";
 
 function App() {
   const [teams, setTeams] = useState({
@@ -55,7 +58,7 @@ function App() {
 
   const handleSubmit = () => {
     if (errorCheck()) return;
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/predict`, {
+    fetch(`/api/predict`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
