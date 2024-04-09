@@ -1,4 +1,4 @@
-from model_prediction import predict_game_score
+from backend.model_prediction import predict_game_score
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
@@ -18,7 +18,7 @@ import os
 
 port = int(os.environ.get('PORT', 9090))
 
-app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
+app = Flask(__name__, static_folder='frontend/dist', static_url_path='/')
 
 
 @app.route('/', defaults={'path': ''})
