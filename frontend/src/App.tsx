@@ -21,7 +21,7 @@ function App() {
   });
 
   // calculate scores using existing structure of result
-  let awayScore, homeScore;
+  let awayScore: number, homeScore: number;
   if (result && resultTeams.homeTeam === result[0]) {
     awayScore = Math.min(result[1] as number, result[2] as number);
     homeScore = Math.max(result[1] as number, result[2] as number);
@@ -81,7 +81,7 @@ function App() {
       <div className="mb-8">
         <img src={football} alt="football" className="w-32 h-32" />
       </div>
-      <h1 className="mb-8">NFL Game Predictor</h1>
+      <h1 className="mb-8">NFL Score Predictor</h1>
       <div className="flex max-w-sm gap-8 justify-center flex-col md:flex-row">
         <div className="flex flex-row gap-2">
           <select
